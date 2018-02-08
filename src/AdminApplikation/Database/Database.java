@@ -20,7 +20,7 @@ public class Database {
             + "&useSSL=false"
             + "&requireSSL=false";
 	private String User = "root";
-	private String Pass = "root";
+	private String Pass = "sina2119";
 	
 	public Connection Connect(){
 		try{
@@ -56,7 +56,8 @@ public class Database {
 			JOptionPane.showMessageDialog(null, e);
 		}
 	}
-	public ResultSet SelectQuery(String Statement){
+	public ResultSet SelectQuery(String Statement)
+	{
 		Conn = Connect();
 		try {
 			PS = Conn.prepareStatement(Statement);
@@ -66,6 +67,8 @@ public class Database {
 		}
 		return RS;
 	}
+	
+	
 	
 	public void Disconnect(){
 	    try { if (RS != null) RS.close(); } catch (Exception e) {};

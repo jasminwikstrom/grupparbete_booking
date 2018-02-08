@@ -13,65 +13,53 @@ public class ManualRegistration
 {
 	public ManualRegistration()
 	{
-		chooseAndChangeAttendance(askMemberName());
+		chooseAndChangeAttendance();
 	}
 	
-
-	public String askMemberName()
-	{
-		Scanner userInput = new Scanner(System.in);
-		String name = "";
-		
-		while(name.equalsIgnoreCase(""))
-		{
-			System.out.println("Ange medlemens namn: ");
-			name = userInput.nextLine();
-		}
-		
-	
-		return name;
-	}
-	
-	public void chooseAndChangeAttendance(String name)
+	public void chooseAndChangeAttendance()
 	{
 		int id = 0;
-		Connection con = null;
-		PreparedStatement stmt = null;
-		PreparedStatement stmt2 = null;
+		String statement = "";
+		String name = "";
+		
 		ResultSet rs = null;
+		
 		List<Integer> idList = new ArrayList<Integer>();
 		List<String> memberInfoList = new ArrayList<String>();
-		Scanner userInput = new Scanner(System.in);
+		
+		DatabaseConnectQuery dbc = new DatabaseConnectQuery();
+		GetUserInput getui = new GetUserInput();
+		
+		name = getui.askMemberName();
+		
 		
 		
 		
 		try 
 		{
-			con = DriverManager.getConnection( "jdbc:mysql://localhost:3306/bestbookingever", "root", "root");
-						
+			dbc.connect();
 			
-			stmt = con.prepareStatement("select bokning.id as id, person.namn as name, "
-					+ "salbokning.StartTid as start, salbokning.SlutTid as finish\r\n" + 
-					"from person\r\n" + 
-					"inner join medlem \r\n" + 
+			statement = "select bokning.id as id, person.namn as name, salbokning.StartTid as start, salbokning.SlutTid as finish \r\n" + 
+					"from person \r\n" + 
+					"inner join medlem\r\n" + 
 					"on medlem.personId = person.id\r\n" + 
-					"inner join bokning\r\n" + 
-					"on bokning.MedlemID = medlem.id\r\n" + 
+					"inner join bokning \r\n" + 
+					"on bokning.MedlemID = medlem.id \r\n" + 
 					"inner join salbokning\r\n" + 
 					"on salbokning.passid = bokning.passid\r\n" + 
-					"where person.namn = ?"
-					+ "group by start;"); 
-				
-			stmt.setString(1, name);				
+					"where person.namn = ?\r\n" + 
+					"and startTid between NOW() - interval 30 minute and NOW() + interval 4 hour\r\n" + 
+					"and bokning.närvarat = 0\r\n" + 
+					"order by start;";
 			
-			 
-			rs = stmt.executeQuery();
+			rs = dbc.queryDB(statement, name);
 
 			
 			while (rs.next()) 
 			{ 
 				id = rs.getInt("id");
 				idList.add(id);
+				
 				String info = rs.getString("name")+"\t"+rs.getTimestamp("start")+"\t"+rs.getTime("finish");
 				memberInfoList.add(info);
 			}
@@ -89,18 +77,15 @@ public class ManualRegistration
 					System.out.println(i+"\t"+memberInfoList.get(i));
 				}
 				
-				int choice = userInput.nextInt();
+				int choice = getui.getInt();
 				
 				id = idList.get(choice);
 				
-				stmt2 = con.prepareStatement("update bokning \r\n" + 
+				statement = "update bokning \r\n" + 
 						"set närvarat = 1\r\n" + 
-						"where id = ?;");
+						"where id = ?;";
+				dbc.updateQuery(statement, id);
 				
-				stmt2.setInt(1, id);
-				
-				
-				stmt2.executeUpdate();
 				System.out.println("närvaro registrerad");
 			}
 			
@@ -113,18 +98,8 @@ public class ManualRegistration
 		
 		finally
 		{
-			try 
-			{
-				userInput.close();
-				rs.close();
-				stmt.close();
-				con.close();
-			}
-			catch (SQLException e) 
-			{
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			dbc.disconnect();
+					
 		}
 	}
 	

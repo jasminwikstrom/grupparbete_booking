@@ -11,55 +11,35 @@ public class AutomaticRegistration
 {
 	public AutomaticRegistration()
 	{
-		String name = askMemberName();
-		registerPresence(name);
+		registerPresence();
 	}
 
 	
-	
-	public String askMemberName()
-	{
-		Scanner userInput = new Scanner(System.in);
-		String name = "";
-		
-		while(name.equalsIgnoreCase(""))
-		{
-			System.out.println("Ange medlemens namn: ");
-			name = userInput.nextLine();
-		}
-		
-		userInput.close();
-		return name;
-	}
-	
-	public void registerPresence(String name)
+	public void registerPresence()
 	{
 		int id = 0;
-		Connection con = null;
-		PreparedStatement stmt = null;
-		PreparedStatement stmt2 = null;
+		String stmt = "";
+		String name = "";
+
 		ResultSet rs = null;
+		DatabaseConnectQuery dbc = new DatabaseConnectQuery();
+		GetUserInput getui = new GetUserInput();
 		
-		
+		name = getui.askMemberName();
 		
 		try 
 		{
-			con = DriverManager.getConnection( "jdbc:mysql://localhost:3306/bestbookingever", "root", "root");
-						
+			dbc.connect();
 			
-			stmt = con.prepareStatement("select bokning.id\r\n" + 
+			stmt = "select bokning.id\r\n" + 
 					"from Person \r\n" + 
 					"inner join medlem on medlem.PersonID = person.id\r\n" + 
 					"inner join bokning on bokning.MedlemID = medlem.id\r\n" + 
 					"inner join salbokning on bokning.PassID = salbokning.passid\r\n" + 
-					"where now() between salbokning.startTid - interval 5 minute and salbokning.SlutTid\r\n" + 
-					"and person.namn = ?;"); 
-				
-			stmt.setString(1, name);				
+					"where now() between salbokning.startTid - interval 30 minute and salbokning.SlutTid\r\n" + 
+					"and person.namn = ?;";
 			
-			 
-			rs = stmt.executeQuery();
-
+			rs = dbc.queryDB(stmt, name);
 			
 			while (rs.next()) 
 			{ 
@@ -73,14 +53,11 @@ public class AutomaticRegistration
 			
 			else
 			{
-				stmt2 = con.prepareStatement("update bokning \r\n" + 
+				stmt = "update bokning \r\n" + 
 						"set närvarat = 1\r\n" + 
-						"where id = ?;");
+						"where id = ?;";
+				dbc.updateQuery(stmt, id);
 				
-				stmt2.setInt(1, id);
-				
-				
-				stmt2.executeUpdate();
 				System.out.println("närvaro registrerad");
 			}
 			
@@ -93,14 +70,7 @@ public class AutomaticRegistration
 		
 		finally
 		{
-			try {
-				rs.close();
-				stmt.close();
-				con.close();
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			dbc.disconnect();
 		}
 	}
 	
