@@ -13,8 +13,7 @@ public class Controller {
     Repository db = new Repository();
     List<Pass> allaPass;
 
-    public Controller() {
-    }
+    public Controller() {}
 
     public boolean loggaIN()   {
         boolean ärInloggad = false;
