@@ -21,14 +21,14 @@ public class Database {
             + "&useSSL=false"
             + "&requireSSL=false";
 	private String User = "root";
-	private String Pass = "sina2119";
+	private String Pass = "root";
 	
 	public Connection Connect(){
 		try{
 			Class.forName("com.mysql.jdbc.Driver");
 			Conn = DriverManager.getConnection(Host, User, Pass);
 		}catch(Exception e){
-			System.out.println("n�got gick fel!");
+			System.out.println("något gick fel!");
 		}
 		return Conn;
 	}
@@ -64,7 +64,7 @@ public class Database {
 			PS = Conn.prepareStatement(Statement);
 			RS = PS.executeQuery();
 		} catch (SQLException e) {
-			System.out.println("N�got gick fel!");
+			System.out.println("Något gick fel!");
 		}
 		return RS;
 	}
@@ -108,7 +108,7 @@ public class Database {
 			Class.forName("com.mysql.jdbc.Driver");
 			Conn = DriverManager.getConnection(Host, User, Pass);
 		}catch(Exception e){
-			System.out.println("n�got gick fel!");
+			System.out.println("nï¿½got gick fel!");
 		}
 		return Conn;
 	}
@@ -143,7 +143,7 @@ public class Database {
 			PS = Conn.prepareStatement(Statement);
 			RS = PS.executeQuery();
 		} catch (SQLException e) {
-			System.out.println("N�got gick fel!");
+			System.out.println("Nï¿½got gick fel!");
 		}
 		return RS;
 	}
