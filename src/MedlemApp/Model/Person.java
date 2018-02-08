@@ -5,7 +5,6 @@ abstract public class Person {
     private int personID;
     private String namn;
 
-
     public Person(int personID, String namn) {
         this.personID = personID;
         this.namn = namn;

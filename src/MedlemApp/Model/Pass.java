@@ -4,15 +4,15 @@ import java.sql.Timestamp;
 
 public class Pass {
 
-    int passID;
-    boolean ärPTpass;
-    String ledare;
-    String träningstyp;
-    String sal;
-    Timestamp starttid;
-    Timestamp sluttid;
-    int maxAntal;
-    int bokade;
+    private int passID;
+    private boolean ärPTpass;
+    private String ledare;
+    private String träningstyp;
+    private String sal;
+    private Timestamp starttid;
+    private Timestamp sluttid;
+    private int maxAntal;
+    private int bokade;
 
     public Pass()   {}
 

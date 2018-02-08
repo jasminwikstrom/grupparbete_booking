@@ -3,10 +3,10 @@ package MedlemApp.Model;
 
 public class Bokning {
 
-    int bokningID;
-    boolean närvarat;
-    int medlemID;
-    int passID;
+    private int bokningID;
+    private boolean närvarat;
+    private int medlemID;
+    private int passID;
 
     public Bokning(int bokningID, boolean närvarat, int medlemID, int passID) {
         this.bokningID = bokningID;

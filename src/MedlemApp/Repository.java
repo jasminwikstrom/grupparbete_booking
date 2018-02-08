@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
-
 public class Repository {
     private Properties p = new Properties();
 
@@ -22,7 +21,6 @@ public class Repository {
                     ("/Users/ohmacbook/IdeaProjects/MedlemApplikation/src/Settings.properties"));
             Class.forName("com.mysql.jdbc.Driver");
         } catch (Exception e) {
-            System.out.println("Något gick fel i konstruktorn för Repository");
             e.printStackTrace();
         }
     }
@@ -74,7 +72,6 @@ public class Repository {
                 bokning.setPassID(rs.getInt(4));
                 bokningar.add(bokning);
             }
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
