@@ -27,7 +27,7 @@ public class Database {
 			Class.forName("com.mysql.jdbc.Driver");
 			Conn = DriverManager.getConnection(Host, User, Pass);
 		}catch(Exception e){
-			System.out.println("något gick fel!");
+			System.out.println("nï¿½got gick fel!");
 		}
 		return Conn;
 	}
@@ -62,7 +62,7 @@ public class Database {
 			PS = Conn.prepareStatement(Statement);
 			RS = PS.executeQuery();
 		} catch (SQLException e) {
-			System.out.println("Något gick fel!");
+			System.out.println("Nï¿½got gick fel!");
 		}
 		return RS;
 	}

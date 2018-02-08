@@ -1,12 +1,12 @@
 package AdminApplikation.Database.Objects;
 
-public class Anst‰lld {
+public class Anst√§lld {
 
 	private int ID;
 	private int PersonID;
 	private int PositionID;
-	
-	public Anst‰lld(int ID, int PersonID, int PositionID){
+
+	public Anst√§lld(int ID, int PersonID, int PositionID){
 		this.ID = ID;
 		this.PersonID = PersonID;
 		this.PositionID = PositionID;
@@ -35,5 +35,5 @@ public class Anst‰lld {
 	public void setPositionID(int positionID) {
 		PositionID = positionID;
 	}
-	
+
 }
